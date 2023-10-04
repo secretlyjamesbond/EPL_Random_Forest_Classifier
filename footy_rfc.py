@@ -6,11 +6,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from pandas.plotting import scatter_matrix  
 
-# Define functions for loading and processing data
-
-def load_data(filepath):
-    return pd.read_csv(filepath)
-
+def load_data(filepath_or_url):
+    try:
+        return pd.read_csv(filepath_or_url)
+    except Exception as e:
+        print(f"An error occurred while trying to read {filepath_or_url}: {str(e)}")
+        return pd.DataFrame()  # Returning an empty DataFrame on error
+    
 def clean_data(data):
     data = data.copy()
     data = data.dropna(how='all')
@@ -62,10 +64,10 @@ def display_correlation_matrix(data, title, columns_to_correlate):
     sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", linewidths=.5)
     plt.title(title)
     plt.show()
-
+    
 def main():
-    filepath_2020_2021 = r"C:\data_2020_2021.csv"
-    filepath_2021_2022 = r"C:\data_2021_2022.csv"
+    filepath_2020_2021 = "https://raw.githubusercontent.com/secretlyjamesbond/footydotpy/main/data_2020_2021.csv"
+    filepath_2021_2022 = "https://raw.githubusercontent.com/secretlyjamesbond/footydotpy/main/data_2021_2022.csv"
     
     # Load and clean the data for both seasons
     data_2020_2021 = load_data(filepath_2020_2021)
@@ -91,7 +93,7 @@ def main():
 
     # Train the Random Forest Classifier
     rfc = train_model(X_train, y_train)
-    
+
     # Evaluate the model and display results
     y_pred = evaluate_model(rfc, X_test, y_test)
     y_pred_proba = rfc.predict_proba(X_test)
@@ -126,7 +128,6 @@ def main():
     plt.suptitle("Scatter Matrix for Selected Variables (2021-2022 Season)", fontsize=16)  # Add a title
     plt.show()
 
-
-
 if __name__ == "__main__":
     main()
+
