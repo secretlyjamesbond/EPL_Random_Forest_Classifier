@@ -22,4 +22,6 @@ Main Function: The main function orchestrates all the steps described above. It 
 
 Execution: Finally, the script runs the main function when executed as a standalone script.
 
+It’s advisable to adopt a clear and consistent naming convention for your data files, such as “data_[season].csv” to quickly identify and utilize them in future analyses. Simply copy and past the path of your CSV files once you have downloaded the data.
+
 Data used: https://www.kaggle.com/datasets/saife245/english-premier-league
