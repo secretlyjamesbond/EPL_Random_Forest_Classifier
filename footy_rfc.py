@@ -64,8 +64,8 @@ def display_correlation_matrix(data, title, columns_to_correlate):
     plt.show()
 
 def main():
-    filepath_2020_2021 = r"C:\Users\27670\OneDrive - 23 South Advisory\Documents\data_2020_2021.csv"
-    filepath_2021_2022 = r"C:\Users\27670\OneDrive - 23 South Advisory\Documents\data_2021_2022.csv"
+    filepath_2020_2021 = r"C:\data_2020_2021.csv"
+    filepath_2021_2022 = r"C:\data_2021_2022.csv"
     
     # Load and clean the data for both seasons
     data_2020_2021 = load_data(filepath_2020_2021)
