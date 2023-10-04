@@ -1,4 +1,4 @@
-# footydotpy
+# Random Forest Classifier for the English Premier League
 Football prediction algorithms
 Importing Libraries: The script begins by importing necessary Python libraries such as Pandas for data manipulation, NumPy for numerical operations, Seaborn and Matplotlib for data visualization, and scikit-learn for machine learning tools.
 
