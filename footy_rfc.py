@@ -4,6 +4,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
+from pandas.plotting import scatter_matrix  
+
+# Define functions for loading and processing data
 
 def load_data(filepath):
     return pd.read_csv(filepath)
@@ -18,7 +21,6 @@ def clean_data(data):
         data[col] = data[col].str.strip()
     
     return data
-
 
 def encode_categorical_columns(data, columns):
     data = data.copy()
@@ -60,14 +62,14 @@ def display_correlation_matrix(data, title, columns_to_correlate):
     sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", linewidths=.5)
     plt.title(title)
     plt.show()
-   
+
 def main():
-    filepath_2020_2021 = r"C:\data_2020_2021.csv"
-    filepath_2021_2022 = r"C:\data_2021_2022.csv"
+    filepath_2020_2021 = r"C:\Users\27670\OneDrive - 23 South Advisory\Documents\data_2020_2021.csv"
+    filepath_2021_2022 = r"C:\Users\27670\OneDrive - 23 South Advisory\Documents\data_2021_2022.csv"
     
+    # Load and clean the data for both seasons
     data_2020_2021 = load_data(filepath_2020_2021)
     data_2021_2022 = load_data(filepath_2021_2022)
-    
     data_2020_2021 = clean_data(data_2020_2021)
     data_2021_2022 = clean_data(data_2021_2022)
     
@@ -75,16 +77,22 @@ def main():
                        'HC', 'AC', 'HF', 'AF', 'HY', 'AY', 'HR', 'AR']
     target_column = 'FTR'
     
+    # Split the data into features and target variables
     X_train = data_2020_2021[feature_columns]
     y_train = data_2020_2021[target_column]
     X_test = data_2021_2022[feature_columns]
     y_test = data_2021_2022[target_column]
 
     categorical_columns = ['HomeTeam', 'AwayTeam', 'HTR']
+    
+    # Encode categorical columns
     X_train = encode_categorical_columns(X_train, categorical_columns)
     X_test = encode_categorical_columns(X_test, categorical_columns)
 
+    # Train the Random Forest Classifier
     rfc = train_model(X_train, y_train)
+    
+    # Evaluate the model and display results
     y_pred = evaluate_model(rfc, X_test, y_test)
     y_pred_proba = rfc.predict_proba(X_test)
    
@@ -95,8 +103,30 @@ def main():
 
     columns_to_correlate = ['FTR','HTHG', 'HTAG', 'HTR', 'HS', 'AS', 'HST', 'AST', 'HC', 'AC', 
                              'HF', 'AF', 'HY', 'AY', 'HR', 'AR']
+    
+    # Display correlation matrices
     display_correlation_matrix(data_2020_2021, "Correlation Matrix for 2020-2021 Season", columns_to_correlate)
     display_correlation_matrix(data_2021_2022, "Correlation Matrix for 2021-2022 Season", columns_to_correlate)
+
+    # Scatter Matrix Visualization for 2020-2021 Data
+    scatter_columns_2020_2021 = ['HTHG', 'HTAG', 'HTR', 'HS', 'AS', 'HST', 'AST', 'HC', 'AC', 'HF', 'AF', 'HY', 'AY', 'HR', 'AR']
+    scatter_data_2020_2021 = data_2020_2021[scatter_columns_2020_2021]
+
+    # Specify the title for the scatter matrix for 2020-2021 season
+    scatter_matrix(scatter_data_2020_2021, alpha=0.5, figsize=(12, 12), diagonal='hist', grid=True)
+    plt.suptitle("Scatter Matrix for Selected Variables (2020-2021 Season)", fontsize=16)  # Add a title
+    plt.show()
+
+    # Scatter Matrix Visualization for 2021-2022 Data
+    scatter_columns_2021_2022 = ['HTHG', 'HTAG', 'HTR', 'HS', 'AS', 'HST', 'AST', 'HC', 'AC', 'HF', 'AF', 'HY', 'AY', 'HR', 'AR']
+    scatter_data_2021_2022 = data_2021_2022[scatter_columns_2021_2022]
+
+    # Specify the title for the scatter matrix for 2021-2022 season
+    scatter_matrix(scatter_data_2021_2022, alpha=0.5, figsize=(12, 12), diagonal='hist', grid=True)
+    plt.suptitle("Scatter Matrix for Selected Variables (2021-2022 Season)", fontsize=16)  # Add a title
+    plt.show()
+
+
 
 if __name__ == "__main__":
     main()
